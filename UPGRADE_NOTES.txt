@@ -1,0 +1,24 @@
+Spinit — 14 October 2026 update
+
+SNAKE ARENA
+- Fixed the Quick Match relay filter: host-authored `snakeDelta` packets were dropped although that is the packet type used by Snake's authoritative 7 Hz simulation. Added `snakeDelta` to the host allowlist.
+- Replaced overlapping keyboard/touch handlers with one keyboard listener and one pointer-swipe handler. Removed duplicate/legacy D-pad controls and retained one touch D-pad on mobile.
+- Kept the responsive canvas visible and added a stale-packet watchdog that asks the host for a state snapshot if deltas stop arriving. The watchdog does not show a sync warning after the local client has received the winner state.
+- Winner plays a bright ascending sound; the losing player hears a descending sound. Result board has a large close control.
+
+BROFIGHT
+- Controls are compact and overlaid inside the arena rather than placed below it.
+- Choosing a hero locks it on the authoritative host state; the selection row collapses entirely to remove wasted vertical space. Players must choose a hero before Ready.
+- Five character-specific boost moves and different damage values:
+  Topuski — Groundquake Belly Slam, 27 damage.
+  Arduino — Electric Clap, 21 damage.
+  Rab — Hulk Power Punch, 39 damage.
+  Ra.1 — Fire Hammer Throw and return, 32 damage.
+  Wa.fu — Sword Throw and return, 26 damage.
+- Boost damage resolves after a 1.5-second defence window. A block received by the host before the deadline fully negates that boost. Character-specific animation remains active during the pending window.
+
+VALIDATION
+- All inline script blocks pass `node --check`.
+- `server/server.js` passes `node --check`.
+- Focused Node tests pass for five distinct boost-damage levels, delayed damage, successful block within the 1.5-second window, and inclusion of `snakeDelta` in the host relay allowlist.
+- A real production WebSocket session and physical-phone test are not available here; deploy both frontend and server updates together and test with two separate devices.
